@@ -17,7 +17,7 @@ exports.parseLine = function(line)
     }
     else if(line.match(/".+?" killed ".+?" with ".+?" \(.+?".+?"\) \(.+?".+?"\) \(.+?".+?"\)/) != null)
     {
-        // Player killed another player -- with special.
+        // Player killed another player -- wit`h special.
         data = parseSpecialKill(line);
     }
     else if(line.match(/".+?" triggered "damage" against ".+?" \(damage "\d+"\) \(weapon "\w+"\)/))
@@ -39,6 +39,16 @@ exports.parseLine = function(line)
     {
         // Player picked up item.
         data = parsePickup(line);
+    }
+    else if(line.match(/".+?" triggered "player_builtobject" \(.+?\) \(.+?\)/))
+    {
+        // Player built an object
+        data = parseBuildObject(line);
+    }
+    else if(line.match(/".+" triggered "killedobject" \(object .+\) \(weapon .+\) \(objectowner .+\) \(attacker_position .+\)/))
+    {
+        // Player destroyed an object
+        data = parseDestroyObject(line);
     }
     else if(line.match(/Log file started \(.+?\) \(.+?\) \(.+?\)/))
     {
@@ -243,6 +253,34 @@ var parseRealDamage = function(line)
     {
         data.headshot = headshotMatches[1];
     }
+
+    return data;
+}
+
+var parseBuildObject = function(line)
+{
+    var data = {};
+    data.type = 'build_object';
+
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" triggered "player_builtobject" \(object "(\w+)"\) \(position "(-*\d+) (-*\d+) (-*\d+)"\)/);
+    data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
+    data.object = matches[4];
+    data.position = {x: matches[5], y: matches[7], z: matches[6]};
+
+    return data;
+}
+
+var parseDestroyObject = function(line)
+{
+    var data = {};
+    data.type = 'destroy_object';
+
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" triggered "killedobject" \(object "(.+)"\) \(weapon "(.+)"\) \(objectowner "(.+)<\d+><(.+)><(Red|Blue)>"\) \(attacker_position "(-*\d+) (-*\d+) (-*\d+)"\)/);
+    data.attacker = {name: matches[1], steamid: matches[2], team: matches[3]};
+    data.object = matches[4];
+    data.victim = {name: matches[6], steamid: matches[7], team: matches[8]};
+    data.position = {x: matches[9], y: matches[11], z: matches[10]};
+    data.weapon = matches[5];
 
     return data;
 }
