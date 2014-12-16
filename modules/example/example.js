@@ -11,7 +11,8 @@ module.exports = function(events)
 
     events.on('parse', function(type, data)
     {
-        console.dir(data);
+        if(data.length != 0)
+            console.dir(data);
     });
 
 };

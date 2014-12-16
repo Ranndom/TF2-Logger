@@ -51,7 +51,7 @@ socket.on('message', function(msg, rinfo)
     msg = msg.toString().substring(4);
     var data = parse.parseLine(msg);
 
-    //console.log("[SOCKET] Server received " + msg + " from " + rinfo.address + ":" + rinfo.port);
+    console.log("[PARSER] %s", msg);
 
     events.emit('parse', data.type, data);
 });

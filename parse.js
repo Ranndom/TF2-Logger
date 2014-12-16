@@ -14,20 +14,49 @@ exports.parseLine = function(line)
         // Player killed another player.
         data = parseKill(line);
     }
-    if(line.match(/".+?" killed ".+?" with ".+?" \(.+?".+?"\) \(.+?".+?"\) \(.+?".+?"\)/) != null)
+    else if(line.match(/".+?" killed ".+?" with ".+?" \(.+?".+?"\) \(.+?".+?"\) \(.+?".+?"\)/) != null)
     {
         // Player killed another player -- with special.
         data = parseSpecialKill(line);
     }
-    if(line.match(/".+" committed suicide with "/) != null)
+    else if(line.match(/".+" committed suicide with "/) != null)
     {
         // Player suicided.
         data = parseSuicide(line);
     }
-    if(line.match(/".+?<\d+><.+?><\w+?>" picked up item "\w+"/) != null)
+    else if(line.match(/".+?<\d+><.+?><\w+?>" picked up item "\w+"/) != null)
     {
         // Player picked up item.
         data = parsePickup(line);
+    }
+    else if(line.match(/Log file started \(.+?\) \(.+?\) \(.+?\)/))
+    {
+        // Log started.
+        data = parseLogStart(line);
+    }
+    else if(line.match(/Loading map ".+?"/))
+    {
+        // Loading map.
+        data = parseMapLoad(line);
+    }
+    else if(line.match(/Started map ".+?" \(CRC ".+?"\)/))
+    {
+        // Started map.
+        data = parseMapStarted(line);
+    }
+    else if(line.match(/server_cvar: ".+?" ".+?"/))
+    {
+        // Server cvar changed.
+        data = parseCvarChange(line);
+    }
+    else if(line.match(/rcon from ".+?": command ".+"/))
+    {
+        // Server rcon command.
+        data = parseRconCommand(line);
+    }
+    else
+    {
+        console.log("[PARSER] Missing handler for line %s, bug Ranndom about it!", line);
     }
 
     return data;
@@ -89,6 +118,67 @@ var parsePickup = function(line)
     {
         data.healed = medkitMatches[5];
     }
+
+    return data;
+}
+
+var parseLogStart = function(line)
+{
+    var data = {};
+    data.type = 'log_start';
+
+    var matches = line.match(/Log file started \(.+?"(.+?)"\) \(.+?"(.+?)"\) \(.+?"(.+?)"\)/);
+    data.name = matches[1];
+    data.gamePath = matches[2];
+    data.gameVersion = matches[3];
+
+    return data;
+}
+
+var parseMapLoad = function(line)
+{
+    var data = {};
+    data.type = 'map_load';
+
+    var matches = line.match(/Loading map "(.+?)"/);
+    data.map = matches[1];
+
+    return data;
+}
+
+var parseMapStarted = function(line)
+{
+    var data = {};
+    data.type = 'map_started';
+
+    var matches = line.match(/Started map "(.+?)" \(CRC "(.+?)"\)/);
+    data.map = matches[1];
+    data.crc = matches[2];
+
+    return data;
+}
+
+var parseCvarChange = function(line)
+{
+    var data = {};
+    data.type = 'cvar_change';
+
+    var matches = line.match(/server_cvar: "(.+?)" "(.+?)"/);
+    data.cvar = matches[1];
+    data.value = matches[2];
+
+    return data;
+}
+
+var parseRconCommand = function(line)
+{
+    var data = {};
+    data.type = 'rcon_command';
+
+    var matches = line.match(/rcon from "(.+?):(\d+)": command "(.+)"/);
+    data.ip = matches[1];
+    data.port = matches[2];
+    data.command = matches[3];
 
     return data;
 }
