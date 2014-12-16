@@ -10,12 +10,12 @@ exports.parseLine = function(line)
     // Data object
     var data = {};
 
-    if(line.match(/".+?" killed ".+?" with ".+?" \(attacker_position ".+?"\) \(victim_position ".+?"\)/) != null)
+    if(line.match(/".+?" killed ".+?" with ".+?" \(attacker_position ".+?"\) \(victim_position ".+?"\)/))
     {
         // Player killed another player.
         data = parseKill(line);
     }
-    else if(line.match(/".+?" killed ".+?" with ".+?" \(.+?".+?"\) \(.+?".+?"\) \(.+?".+?"\)/) != null)
+    else if(line.match(/".+?" killed ".+?" with ".+?" \(.+?".+?"\) \(.+?".+?"\) \(.+?".+?"\)/))
     {
         // Player killed another player -- with special.
         data = parseSpecialKill(line);
@@ -35,12 +35,17 @@ exports.parseLine = function(line)
         // Player shot a weapon.
         data = parseShotFired(line);
     }
-    else if(line.match(/".+" committed suicide with "/) != null)
+    else if(line.match(/".+" disconnected \(reason ".+"\)/))
+    {
+        // Player disconnected.
+        data = parseDisconnect(line);
+    }
+    else if(line.match(/".+" committed suicide with "/))
     {
         // Player suicided.
         data = parseSuicide(line);
     }
-    else if(line.match(/".+?<\d+><.+?><\w+?>" picked up item "\w+"/) != null)
+    else if(line.match(/".+?<\d+><.+?><\w+?>" picked up item "\w+"/))
     {
         // Player picked up item.
         data = parsePickup(line);
@@ -334,6 +339,18 @@ var parseShotFired = function(line)
     var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" triggered "shot_fired" \(weapon "(.+)"\)/);
     data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.weapon = matches[4];
+
+    return data;
+}
+
+var parseDisconnect = function(line)
+{
+    var data = {};
+    data.type = 'disconnect';
+
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" disconnected \(reason "(.+)"\)/);
+    data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
+    data.reason = matches[4];
 
     return data;
 }
