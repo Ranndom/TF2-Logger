@@ -7,8 +7,10 @@
 module.exports = function(events, logger)
 {
 
+    // Module loaded successfully.
     logger.info("Example module successfully loaded.");
 
+    // Called whenever a line is parsed.
     events.on('parse', function(type, data)
     {
         if(data.length != 0)

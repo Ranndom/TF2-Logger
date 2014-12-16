@@ -30,6 +30,11 @@ exports.parseLine = function(line)
         // Player damaged another player -- with real damage.
         data = parseRealDamage(line);
     }
+    else if(line.match(/".+" triggered "shot_fired" \(weapon ".+"\)/))
+    {
+        // Player shot a weapon.
+        data = parseShotFired(line);
+    }
     else if(line.match(/".+" committed suicide with "/) != null)
     {
         // Player suicided.
@@ -317,6 +322,18 @@ var parseHealPlayer = function(line)
     data.healer = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.healed = {name: matches[4], steamid: matches[5], team: matches[6]};
     data.amount = matches[7];
+
+    return data;
+}
+
+var parseShotFired = function(line)
+{
+    var data = {};
+    data.type = 'shot_fired';
+
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" triggered "shot_fired" \(weapon "(.+)"\)/);
+    data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
+    data.weapon = matches[4];
 
     return data;
 }

@@ -28,7 +28,7 @@ RL 12/16/2014 - 08:20:51: World triggered "Round_Win" (winner "Red")
 RL 12/16/2014 - 08:27:59: Team "Blue" current score "4" with "1" players
 RL 12/16/2014 - 08:27:59: Team "Red" current score "1" with "0" players
 RL 12/16/2014 - 08:27:59: World triggered "ScrambleTeams_Auto"
-RL 12/16/2014 - 07:53:59: "Ranndom<2><[U:1:103542307]><Blue>" triggered "shot_fired" (weapon "scattergun")
+-- RL 12/16/2014 - 07:53:59: "Ranndom<2><[U:1:103542307]><Blue>" triggered "shot_fired" (weapon "scattergun")
 RL 12/16/2014 - 07:54:40: "Ranndom<2><[U:1:103542307]><Blue>" triggered "flagevent" (event "picked up") (position "3016 1517 -281")
 RL 12/16/2014 - 07:55:48: "Ranndom<2><[U:1:103542307]><Blue>" triggered "flagevent" (event "captured") (team_caps "1") (caps_per_round "3") (position "-2922 -1444 -287")
 RL 12/16/2014 - 07:57:10: "Ranndom<2><[U:1:103542307]><Blue>" triggered "flagevent" (event "dropped") (position "-2412 569 24")
