@@ -50,6 +50,16 @@ exports.parseLine = function(line)
         // Player destroyed an object
         data = parseDestroyObject(line);
     }
+    else if(line.match(/".+?" triggered "object_detonated" \(.+?\) \(.+?\)/))
+    {
+        // Player detonated an object
+        data = parseDetonateObject(line);
+    }
+    else if(line.match(/".+?" triggered "healed" against ".+?" \(.+?\)/))
+    {
+        // Player healed another player
+        data = parseHealPlayer(line);
+    }
     else if(line.match(/Log file started \(.+?\) \(.+?\) \(.+?\)/))
     {
         // Log started.
@@ -281,6 +291,32 @@ var parseDestroyObject = function(line)
     data.victim = {name: matches[6], steamid: matches[7], team: matches[8]};
     data.position = {x: matches[9], y: matches[11], z: matches[10]};
     data.weapon = matches[5];
+
+    return data;
+}
+
+var parseDetonateObject = function(line)
+{
+    var data = {};
+    data.type = 'detonate_object';
+
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" triggered "object_detonated" \(object "(.+)"\) \(position "(-*\d+) (-*\d+) (-*\d+)"\)/);
+    data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
+    data.object = matches[4];
+    data.position = {x: matches[5], y: matches[7], z: matches[6]};
+
+    return data;
+}
+
+var parseHealPlayer = function(line)
+{
+    var data = {};
+    data.type = 'heal_player';
+
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" triggered "healed" against "(.+)<\d+><(.+)><(Red|Blue)>" \(healing "(\d+)"\)/);
+    data.healer = {name: matches[1], steamid: matches[2], team: matches[3]};
+    data.healed = {name: matches[4], steamid: matches[5], team: matches[6]};
+    data.amount = matches[7];
 
     return data;
 }

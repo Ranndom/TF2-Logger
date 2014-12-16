@@ -40,9 +40,9 @@ RL 12/16/2014 - 07:57:10: "Ranndom<2><[U:1:103542307]><Blue>" triggered "flageve
 -- RL 12/16/2014 - 08:02:47: "Ranndom<2><[U:1:103542307]><Blue>" triggered "damage" against "Hostage<3><�N><Red>" (damage "102") (weapon "ambassador") (crit "crit") (headshot "1")
 -- RL 12/16/2014 - 08:11:05: "CrySomeMore<4><BOT><Red>" triggered "player_builtobject" (object "OBJ_SENTRYGUN") (position "40 -2190 138")
 -- RL 12/16/2014 - 08:12:02: "CrySomeMore<4><BOT><Red>" triggered "player_builtobject" (object "OBJ_DISPENSER") (position "52 -2181 138")
-RL 12/16/2014 - 08:15:02: "CrySomeMore<4><><Red>" triggered "healed" against "CrySomeMore<4><\N><Red>" (healing "2")
+-- RL 12/16/2014 - 08:15:02: "CrySomeMore<4><><Red>" triggered "healed" against "CrySomeMore<4><\N><Red>" (healing "2")
 -- RL 12/16/2014 - 08:15:39: "Ranndom<2><[U:1:103542307]><Blue>" triggered "killedobject" (object "OBJ_SENTRYGUN") (weapon "scattergun") (objectowner "CrySomeMore<4><BOT><Red>") (attacker_position "609 -1684 384")
 -- RL 12/16/2014 - 08:15:45: "Ranndom<2><[U:1:103542307]><Blue>" triggered "killedobject" (object "OBJ_DISPENSER") (weapon "scattergun") (objectowner "CrySomeMore<4><BOT><Red>") (attacker_position "101 -2057 135")
-RL 12/16/2014 - 08:23:07: "CrySomeMore<4><BOT><Blue>" triggered "object_detonated" (object "OBJ_SENTRYGUN") (position "15 -1936 128")
+-- RL 12/16/2014 - 08:23:07: "CrySomeMore<4><BOT><Blue>" triggered "object_detonated" (object "OBJ_SENTRYGUN") (position "15 -1936 128")
 RL 12/16/2014 - 08:23:07: "CrySomeMore<4><BOT><Blue>" disconnected (reason "Kicked from server")
 RL 12/16/2014 - 08:07:41: Log file closed.
