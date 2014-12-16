@@ -7,6 +7,8 @@ var dgram = require('dgram');
 var fs = require('fs');
 var EventEmitter = require('events').EventEmitter;
 var parse = require('./parse');
+var logger = require('./util/logger');
+var selfJSON = require('./package.json');
 
 // Create the UDP socket
 var socket = dgram.createSocket('udp4');
@@ -27,8 +29,20 @@ fs.readdir("modules", function(err, files)
                     if(moduleJSONExists)
                     {
                         var moduleJSON = require("./modules/" + file + "/module.json");
-                        console.log("[MODULES] Loaded module %s v%s", moduleJSON.name, moduleJSON.version);
-                        require("./modules/" + file + "/" + moduleJSON.main)(events);
+
+                        var versionPieces = moduleJSON.targetVersion.split('.');
+                        var selfVersionPieces = selfJSON.version.split('.');
+
+                        if(parseInt(versionPieces[0]) != parseInt(selfVersionPieces[0]))
+                        {
+                            // Uh-oh! Incompatible module version!
+                            logger.info("Failed loading module %s -- module targets version %s, current version %s", moduleJSON.name, moduleJSON.targetVersion, selfJSON.version);
+                        }
+                        else
+                        {
+                            logger.info("Loaded module %s v%s", moduleJSON.name, moduleJSON.version);
+                            require("./modules/" + file + "/" + moduleJSON.main)(events, logger);
+                        }
                     }
                 });
             }
@@ -42,7 +56,7 @@ socket.bind(1025, '0.0.0.0');
 // Socket error
 socket.on('error', function(err)
 {
-    console.log("[SOCKET] Server error: " + err);
+    logger.error("Server error: %s", err);
 });
 
 // Socket message
@@ -51,7 +65,7 @@ socket.on('message', function(msg, rinfo)
     msg = msg.toString().substring(4);
     var data = parse.parseLine(msg);
 
-    console.log("[PARSER] %s", msg);
+    logger.debug("%s", msg);
 
     events.emit('parse', data.type, data);
 });
@@ -60,5 +74,5 @@ socket.on('message', function(msg, rinfo)
 socket.on('listening', function()
 {
     var address = socket.address();
-    console.log("[SOCKET] Bound to port " + address.address + ":" + address.port);
+    logger.info("Bound to port %s:%d", address.address, address.port);
 });

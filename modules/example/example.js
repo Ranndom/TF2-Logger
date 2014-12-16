@@ -4,10 +4,10 @@
  * Example module for TF2-Logger.
  */
 
-module.exports = function(events)
+module.exports = function(events, logger)
 {
 
-    console.log("Example module successfully loaded.");
+    logger.info("Example module successfully loaded.");
 
     events.on('parse', function(type, data)
     {
