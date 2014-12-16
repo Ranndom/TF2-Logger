@@ -3,6 +3,7 @@
  */
 
 var exports = module.exports;
+var logger = require('./util/logger');
 
 exports.parseLine = function(line)
 {
@@ -18,6 +19,16 @@ exports.parseLine = function(line)
     {
         // Player killed another player -- with special.
         data = parseSpecialKill(line);
+    }
+    else if(line.match(/".+?" triggered "damage" against ".+?" \(damage "\d+"\) \(weapon "\w+"\)/))
+    {
+        // Player damaged another player.
+        data = parseDamage(line);
+    }
+    else if(line.match(/".+?" triggered "damage" against ".+?" \(damage "\d+"\) \(realdamage "\d+"\) \(weapon "\w+"\)/))
+    {
+        // Player damaged another player -- with real damage.
+        data = parseRealDamage(line);
     }
     else if(line.match(/".+" committed suicide with "/) != null)
     {
@@ -56,7 +67,7 @@ exports.parseLine = function(line)
     }
     else
     {
-        console.log("[PARSER] Missing handler for line %s, bug Ranndom about it!", line);
+        logger.warn("Missing handler for line %s, bug Ranndom about it!", line);
     }
 
     return data;
@@ -179,6 +190,59 @@ var parseRconCommand = function(line)
     data.ip = matches[1];
     data.port = matches[2];
     data.command = matches[3];
+
+    return data;
+}
+
+var parseDamage = function(line)
+{
+    var data = {};
+    data.type = 'damage';
+
+    var matches = line.match(/"(.+?)<\d+><(.+?)><(Blue|Red)>" triggered "damage" against "(.+?)<\d+><(.+?)><(Blue|Red)>" \(damage "(\d+)"\) \(weapon "(\w+)"\)/);
+    data.attacker = {name: matches[1], steamid: matches[2], team: matches[3]};
+    data.victim = {name: matches[4], steamid: matches[5], team: matches[6]};
+    data.damage = matches[7];
+    data.weapon = matches[8];
+
+    var critMatches = line.match(/\(crit "(\w.+?)"\)/);
+    if(critMatches != null)
+    {
+        data.crit = critMatches[1];
+    }
+
+    var headshotMatches = line.match(/\(headshot "(\d+?)"\)/);
+    if(headshotMatches != null)
+    {
+        data.headshot = headshotMatches[1];
+    }
+
+    return data;
+}
+
+var parseRealDamage = function(line)
+{
+    var data = {};
+    data.type = 'real_damage';
+
+    var matches = line.match(/"(.+?)<\d+><(.+?)><(Blue|Red)>" triggered "damage" against "(.+?)<\d+><(.+?)><(Blue|Red)>" \(damage "(\d+)"\) \(realdamage "(\d+)"\) \(weapon "(\w+)"\)/);
+    data.attacher = {name: matches[1], steamid: matches[2], team: matches[3]};
+    data.victim = {name: matches[4], steamid: matches[5], team: matches[6]};
+    data.damage = matches[7];
+    data.realDamage = matches[8];
+    data.weapon = matches[9];
+
+    var critMatches = line.match(/\(crit "(\w.+?)"\)/);
+    if(critMatches != null)
+    {
+        data.crit = critMatches[1];
+    }
+
+    var headshotMatches = line.match(/\(headshot "(\d+?)"\)/);
+    if(headshotMatches != null)
+    {
+        data.headshot = headshotMatches[1];
+    }
 
     return data;
 }
