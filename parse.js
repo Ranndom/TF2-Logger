@@ -17,7 +17,7 @@ exports.parseLine = function(line)
     }
     else if(line.match(/".+?" killed ".+?" with ".+?" \(.+?".+?"\) \(.+?".+?"\) \(.+?".+?"\)/) != null)
     {
-        // Player killed another player -- wit`h special.
+        // Player killed another player -- with special.
         data = parseSpecialKill(line);
     }
     else if(line.match(/".+?" triggered "damage" against ".+?" \(damage "\d+"\) \(weapon "\w+"\)/))
