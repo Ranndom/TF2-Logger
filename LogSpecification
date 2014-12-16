@@ -1,0 +1,48 @@
+Log
+=====
+
+-- RL 12/15/2014 - 16:20:59: "Ranndom<2><[U:1:103542307]><Blue>" picked up item "ammopack_small"
+-- RL 12/15/2014 - 16:22:57: "Ranndom<2><[U:1:103542307]><Blue>" picked up item "medkit_small" (healing "14")
+-- RL 12/16/2014 - 07:37:32: Log file started (file "logs/L1216000.log") (game "/home/ranndom/dev-servers/tf2/tf") (version "2547652")
+-- RL 12/16/2014 - 08:07:41: Loading map "pl_badwater"
+-- RL 12/16/2014 - 08:07:42: Started map "pl_badwater" (CRC "c7cc787e4416a618046a3cec2fc547c0")
+-- RL 12/16/2014 - 07:38:53: server_cvar: "sv_cheats" "0"
+-- RL 12/16/2014 - 07:59:54: rcon from "58.179.127.67:62580": command "tf_bot_add 1"
+RL 12/16/2014 - 07:43:24: "Ranndom<2><[U:1:103542307]><>" connected, address "58.179.127.67:27005"
+RL 12/16/2014 - 07:43:25: "Ranndom<2><[U:1:103542307]><>" STEAM USERID validated
+RL 12/16/2014 - 07:46:21: "Ranndom<2><[U:1:103542307]><unknown>" spawned as "undefined"
+RL 12/16/2014 - 07:46:21: "Ranndom<2><[U:1:103542307]><>" entered the game
+RL 12/16/2014 - 07:47:28: "Ranndom<2><[U:1:103542307]><Unassigned>" joined team "Blue"
+RL 12/16/2014 - 07:47:34: "Ranndom<2><[U:1:103542307]><Blue>" changed role to "scout"
+RL 12/16/2014 - 07:47:34: "Ranndom<2><[U:1:103542307]><Blue>" spawned as "scout"
+RL 12/16/2014 - 07:48:05: World triggered "Round_Start"
+RL 12/16/2014 - 08:10:42: World triggered "Round_Setup_Begin"
+RL 12/16/2014 - 08:10:42: World triggered "Mini_Round_Selected" (round "round_a")
+RL 12/16/2014 - 08:10:42: World triggered "Mini_Round_Start"
+RL 12/16/2014 - 08:11:52: World triggered "Round_Setup_End"
+RL 12/16/2014 - 08:16:22: World triggered "Round_Overtime"
+RL 12/16/2014 - 08:25:11: Team "Blue" triggered "pointcaptured" (cp "0") (cpname "#Badwater_cap_1") (numcappers "1") (player1 "Ranndom<2><[U:1:103542307]><Blue>") (position1 "27 -1260 206")
+RL 12/16/2014 - 08:20:51: World triggered "Mini_Round_Win" (winner "Red") (round "round_a")
+RL 12/16/2014 - 08:20:51: World triggered "Mini_Round_Length" (seconds "608.98")
+RL 12/16/2014 - 08:20:51: World triggered "Round_Win" (winner "Red")
+RL 12/16/2014 - 08:27:59: Team "Blue" current score "4" with "1" players
+RL 12/16/2014 - 08:27:59: Team "Red" current score "1" with "0" players
+RL 12/16/2014 - 08:27:59: World triggered "ScrambleTeams_Auto"
+RL 12/16/2014 - 07:53:59: "Ranndom<2><[U:1:103542307]><Blue>" triggered "shot_fired" (weapon "scattergun")
+RL 12/16/2014 - 07:54:40: "Ranndom<2><[U:1:103542307]><Blue>" triggered "flagevent" (event "picked up") (position "3016 1517 -281")
+RL 12/16/2014 - 07:55:48: "Ranndom<2><[U:1:103542307]><Blue>" triggered "flagevent" (event "captured") (team_caps "1") (caps_per_round "3") (position "-2922 -1444 -287")
+RL 12/16/2014 - 07:57:10: "Ranndom<2><[U:1:103542307]><Blue>" triggered "flagevent" (event "dropped") (position "-2412 569 24")
+-- RL 12/16/2014 - 08:00:07: "Ranndom<2><[U:1:103542307]><Blue>" triggered "damage" against "Hostage<3><�N><Red>" (damage "39") (weapon "nonnonviolent_protest")
+-- RL 12/16/2014 - 08:00:07: "Ranndom<2><[U:1:103542307]><Blue>" triggered "damage" against "Hostage<3><�N><Red>" (damage "195") (weapon "nonnonviolent_protest") (crit "crit")
+-- RL 12/16/2014 - 08:03:41: "Ranndom<2><[U:1:103542307]><Blue>" triggered "damage" against "Hostage<3><�N><Red>" (damage "43") (realdamage "23") (weapon "knife")
+-- RL 12/16/2014 - 08:04:51: "Ranndom<2><[U:1:103542307]><Blue>" triggered "damage" against "Hostage<3><�N><Red>" (damage "750") (realdamage "125") (weapon "knife") (crit "crit")
+-- RL 12/16/2014 - 08:02:09: "Ranndom<2><[U:1:103542307]><Blue>" triggered "damage" against "Hostage<3><�N><Red>" (damage "102") (realdamage "86") (weapon "ambassador") (crit "crit") (headshot "1")
+-- RL 12/16/2014 - 08:02:47: "Ranndom<2><[U:1:103542307]><Blue>" triggered "damage" against "Hostage<3><�N><Red>" (damage "102") (weapon "ambassador") (crit "crit") (headshot "1")
+RL 12/16/2014 - 08:11:05: "CrySomeMore<4><BOT><Red>" triggered "player_builtobject" (object "OBJ_SENTRYGUN") (position "40 -2190 138")
+RL 12/16/2014 - 08:12:02: "CrySomeMore<4><BOT><Red>" triggered "player_builtobject" (object "OBJ_DISPENSER") (position "52 -2181 138")
+RL 12/16/2014 - 08:15:02: "CrySomeMore<4><><Red>" triggered "healed" against "CrySomeMore<4><\N><Red>" (healing "2")
+RL 12/16/2014 - 08:15:39: "Ranndom<2><[U:1:103542307]><Blue>" triggered "killedobject" (object "OBJ_SENTRYGUN") (weapon "scattergun") (objectowner "CrySomeMore<4><BOT><Red>") (attacker_position "609 -1684 384")
+RL 12/16/2014 - 08:15:45: "Ranndom<2><[U:1:103542307]><Blue>" triggered "killedobject" (object "OBJ_DISPENSER") (weapon "scattergun") (objectowner "CrySomeMore<4><BOT><Red>") (attacker_position "101 -2057 135")
+RL 12/16/2014 - 08:23:07: "CrySomeMore<4><BOT><Blue>" triggered "object_detonated" (object "OBJ_SENTRYGUN") (position "15 -1936 128")
+RL 12/16/2014 - 08:23:07: "CrySomeMore<4><BOT><Blue>" disconnected (reason "Kicked from server")
+RL 12/16/2014 - 08:07:41: Log file closed.
