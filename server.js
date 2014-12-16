@@ -5,42 +5,39 @@
 // Requirements
 var dgram = require('dgram');
 var fs = require('fs');
+var EventEmitter = require('events').EventEmitter;
 var parse = require('./parse');
 
 // Create the UDP socket
 var socket = dgram.createSocket('udp4');
-
-// Finally bind the socket.
-socket.bind(1025, '0.0.0.0');
-
-//
-var modules = [];
+var events = new EventEmitter();
 
 // Load modules
 fs.readdir("modules", function(err, files)
 {
     files.forEach(function(file)
     {
-        if(file.indexOf(".js") == file.length - 3)
+        fs.stat("modules/" + file, function(err, stats)
         {
-            console.log("[MODULES] Loaded module " + file);
-            var module = require('./modules/' + file);
-
-            // Add module to array.
-            modules.push({name: file, module: module});
-
-            // Execute init function, if it exists.
-            if(typeof(module.init) == 'function')
+            if(err) throw err;
+            if(stats.isDirectory())
             {
-                module.init();
+                fs.exists("modules/" + file + "/module.json", function(moduleJSONExists)
+                {
+                    if(moduleJSONExists)
+                    {
+                        var moduleJSON = require("./modules/" + file + "/module.json");
+                        console.log("[MODULES] Loaded module %s v%s", moduleJSON.name, moduleJSON.version);
+                        require("./modules/" + file + "/" + moduleJSON.main)(events);
+                    }
+                });
             }
-            else
-            {
-                console.log("[MODULES] Module %s does not contain a init() function, bug the author to fix it!", file);
-            }
-        }
+        });
     });
 });
+
+// Finally bind the socket.
+socket.bind(1025, '0.0.0.0');
 
 // Socket error
 socket.on('error', function(err)
@@ -56,17 +53,7 @@ socket.on('message', function(msg, rinfo)
 
     //console.log("[SOCKET] Server received " + msg + " from " + rinfo.address + ":" + rinfo.port);
 
-    modules.forEach(function(module)
-    {
-        if(typeof(module.module.parse) == 'function')
-        {
-            module.module.parse(data.type, data);
-        }
-        else
-        {
-            console.log("[MODULES] Module %s does not contain a parse() function, bug the author to fix it!", module.name);
-        }
-    });
+    events.emit('parse', data.type, data);
 });
 
 // Socket listening
