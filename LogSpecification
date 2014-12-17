@@ -15,19 +15,19 @@ RL 12/16/2014 - 07:46:21: "Ranndom<2><[U:1:103542307]><>" entered the game
 RL 12/16/2014 - 07:47:28: "Ranndom<2><[U:1:103542307]><Unassigned>" joined team "Blue"
 -- RL 12/16/2014 - 07:47:34: "Ranndom<2><[U:1:103542307]><Blue>" changed role to "scout"
 -- RL 12/16/2014 - 07:47:34: "Ranndom<2><[U:1:103542307]><Blue>" spawned as "scout"
-RL 12/16/2014 - 07:48:05: World triggered "Round_Start"
-RL 12/16/2014 - 08:10:42: World triggered "Round_Setup_Begin"
-RL 12/16/2014 - 08:10:42: World triggered "Mini_Round_Selected" (round "round_a")
-RL 12/16/2014 - 08:10:42: World triggered "Mini_Round_Start"
-RL 12/16/2014 - 08:11:52: World triggered "Round_Setup_End"
-RL 12/16/2014 - 08:16:22: World triggered "Round_Overtime"
+-- RL 12/16/2014 - 07:48:05: World triggered "Round_Start"
+-- RL 12/16/2014 - 08:10:42: World triggered "Round_Setup_Begin"
+-- RL 12/16/2014 - 08:10:42: World triggered "Mini_Round_Selected" (round "round_a")
+-- RL 12/16/2014 - 08:10:42: World triggered "Mini_Round_Start"
+-- RL 12/16/2014 - 08:11:52: World triggered "Round_Setup_End"
+-- RL 12/16/2014 - 08:16:22: World triggered "Round_Overtime"
 RL 12/16/2014 - 08:25:11: Team "Blue" triggered "pointcaptured" (cp "0") (cpname "#Badwater_cap_1") (numcappers "1") (player1 "Ranndom<2><[U:1:103542307]><Blue>") (position1 "27 -1260 206")
-RL 12/16/2014 - 08:20:51: World triggered "Mini_Round_Win" (winner "Red") (round "round_a")
-RL 12/16/2014 - 08:20:51: World triggered "Mini_Round_Length" (seconds "608.98")
-RL 12/16/2014 - 08:20:51: World triggered "Round_Win" (winner "Red")
+-- RL 12/16/2014 - 08:20:51: World triggered "Mini_Round_Win" (winner "Red") (round "round_a")
+-- RL 12/16/2014 - 08:20:51: World triggered "Mini_Round_Length" (seconds "608.98")
+-- RL 12/16/2014 - 08:20:51: World triggered "Round_Win" (winner "Red")
 RL 12/16/2014 - 08:27:59: Team "Blue" current score "4" with "1" players
 RL 12/16/2014 - 08:27:59: Team "Red" current score "1" with "0" players
-RL 12/16/2014 - 08:27:59: World triggered "ScrambleTeams_Auto"
+-- RL 12/16/2014 - 08:27:59: World triggered "ScrambleTeams_Auto"
 -- RL 12/16/2014 - 07:53:59: "Ranndom<2><[U:1:103542307]><Blue>" triggered "shot_fired" (weapon "scattergun")
 RL 12/16/2014 - 07:54:40: "Ranndom<2><[U:1:103542307]><Blue>" triggered "flagevent" (event "picked up") (position "3016 1517 -281")
 RL 12/16/2014 - 07:55:48: "Ranndom<2><[U:1:103542307]><Blue>" triggered "flagevent" (event "captured") (team_caps "1") (caps_per_round "3") (position "-2922 -1444 -287")

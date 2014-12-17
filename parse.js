@@ -22,6 +22,7 @@ exports.parseLine = function(line)
         {regex: /".+?" triggered "healed" against ".+?" \(.+?\)/, function: parseHealPlayer},
         {regex: /".+" changed role to ".+"}/, function: parseChangeClass},
         {regex: /".+" spawned as ".+"/, function: parsePlayerRespawn},
+        {regex: /World triggered ".+?"/, function: parseWorldTrigger},
         {regex: /Log file started \(.+?\) \(.+?\) \(.+?\)/, function: parseLogStart},
         {regex: /Loading map ".+?"/, function: parseMapLoad},
         {regex: /Started map ".+?" \(CRC ".+?"\)/, function: parseMapStarted},
@@ -316,6 +317,35 @@ var parsePlayerRespawn = function(line)
 
     var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" spawned as "(\w+)"/);
     data.player = {name: matches[1], steamid: matches[2], team: matches[3], class: matches[4]};
+
+    return data;
+}
+
+var parseWorldTrigger = function(line)
+{
+    var data = {};
+    data.type = 'world_trigger';
+
+    var matches = line.match(/World triggered "(.+?)"/);
+    data.trigger = matches[1];
+
+    var winnerMatches = line.match(/\(winner "(Red|Blue)"\)/);
+    if(winnerMatches)
+    {
+        data.winner = winnerMatches[1];
+    }
+
+    var roundMatches = line.match(/\(round "(.+?)"\)/);
+    if(roundMatches)
+    {
+        data.round = roundMatches[1];
+    }
+
+    var secondsMatches = line.match(/\(seconds "(\d+\.\d+)\)"/);
+    if(secondsMatches)
+    {
+        data.seconds = secondsMatches[1];
+    }
 
     return data;
 }
