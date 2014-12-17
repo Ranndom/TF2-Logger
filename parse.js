@@ -296,7 +296,7 @@ var parseDisconnect = function(line)
     var data = {};
     data.type = 'disconnect';
 
-    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue|Unassigned)>" disconnected \(reason "(.+)"\)/);
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue|Unassigned)*>" disconnected \(reason "(.+)"\)/);
     data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.reason = matches[4];
 
