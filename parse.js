@@ -319,7 +319,7 @@ var parsePlayerRespawn = function(line)
     var data = {};
     data.type = 'player_respawn';
 
-    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" spawned as "(\w+)"/);
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue|Unassigned|unknown)>" spawned as "(\w+)"/);
     data.player = {name: matches[1], steamid: matches[2], team: matches[3], class: matches[4]};
 
     return data;
