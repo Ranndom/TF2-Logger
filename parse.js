@@ -70,6 +70,16 @@ exports.parseLine = function(line)
         // Player healed another player
         data = parseHealPlayer(line);
     }
+    else if(line.match(/".+" changed role to ".+"}/))
+    {
+        // Player changed class.
+        data = parseChangeClass(line);
+    }
+    else if(line.match(/".+" spawned as ".+"/))
+    {
+        // Player respawned.
+        data = parsePlayerRespawn(line);
+    }
     else if(line.match(/Log file started \(.+?\) \(.+?\) \(.+?\)/))
     {
         // Log started.
@@ -94,6 +104,11 @@ exports.parseLine = function(line)
     {
         // Server rcon command.
         data = parseRconCommand(line);
+    }
+    else if(line.match(/Log file closed./))
+    {
+        // Log file ended.
+        data = {type: 'log_end'};
     }
     else
     {
@@ -351,6 +366,28 @@ var parseDisconnect = function(line)
     var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" disconnected \(reason "(.+)"\)/);
     data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.reason = matches[4];
+
+    return data;
+}
+
+var parseChangeClass = function(line)
+{
+    var data = {};
+    data.type = 'change_class';
+
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" changed role to "(\w+)"/);
+    data.player = {name: matches[1], steamid: matches[2], team: matches[3], class: matches[4]};
+
+    return data;
+}
+
+var parsePlayerRespawn = function(line)
+{
+    var data = {};
+    data.type = 'player_respawn';
+
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" spawned as "(\w+)"/);
+    data.player = {name: matches[1], steamid: matches[2], team: matches[3], class: matches[4]};
 
     return data;
 }

@@ -13,8 +13,8 @@ RL 12/16/2014 - 07:43:25: "Ranndom<2><[U:1:103542307]><>" STEAM USERID validated
 RL 12/16/2014 - 07:46:21: "Ranndom<2><[U:1:103542307]><unknown>" spawned as "undefined"
 RL 12/16/2014 - 07:46:21: "Ranndom<2><[U:1:103542307]><>" entered the game
 RL 12/16/2014 - 07:47:28: "Ranndom<2><[U:1:103542307]><Unassigned>" joined team "Blue"
-RL 12/16/2014 - 07:47:34: "Ranndom<2><[U:1:103542307]><Blue>" changed role to "scout"
-RL 12/16/2014 - 07:47:34: "Ranndom<2><[U:1:103542307]><Blue>" spawned as "scout"
+-- RL 12/16/2014 - 07:47:34: "Ranndom<2><[U:1:103542307]><Blue>" changed role to "scout"
+-- RL 12/16/2014 - 07:47:34: "Ranndom<2><[U:1:103542307]><Blue>" spawned as "scout"
 RL 12/16/2014 - 07:48:05: World triggered "Round_Start"
 RL 12/16/2014 - 08:10:42: World triggered "Round_Setup_Begin"
 RL 12/16/2014 - 08:10:42: World triggered "Mini_Round_Selected" (round "round_a")
@@ -45,4 +45,4 @@ RL 12/16/2014 - 07:57:10: "Ranndom<2><[U:1:103542307]><Blue>" triggered "flageve
 -- RL 12/16/2014 - 08:15:45: "Ranndom<2><[U:1:103542307]><Blue>" triggered "killedobject" (object "OBJ_DISPENSER") (weapon "scattergun") (objectowner "CrySomeMore<4><BOT><Red>") (attacker_position "101 -2057 135")
 -- RL 12/16/2014 - 08:23:07: "CrySomeMore<4><BOT><Blue>" triggered "object_detonated" (object "OBJ_SENTRYGUN") (position "15 -1936 128")
 -- RL 12/16/2014 - 08:23:07: "CrySomeMore<4><BOT><Blue>" disconnected (reason "Kicked from server")
-RL 12/16/2014 - 08:07:41: Log file closed.
+-- RL 12/16/2014 - 08:07:41: Log file closed.
