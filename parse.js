@@ -7,113 +7,41 @@ var logger = require('./util/logger');
 
 exports.parseLine = function(line)
 {
+    // List of regular expressions to check against.
+    var regexs = [ {regex: /".+?" killed ".+?" with ".+?" \(attacker_position ".+?"\) \(victim_position ".+?"\)/, function: parseKill},
+        {regex: /".+?" killed ".+?" with ".+?" \(.+?".+?"\) \(.+?".+?"\) \(.+?".+?"\)/, function: parseSpecialKill},
+        {regex: /".+?" triggered "damage" against ".+?" \(damage "\d+"\) \(realdamage "\d+"\) \(weapon "\w+"\)/, function: parseRealDamage},
+        {regex: /".+?" triggered "damage" against ".+?" \(damage "\d+"\) \(weapon "\w+"\)/, function: parseDamage},
+        {regex: /".+" triggered "shot_fired" \(weapon ".+"\)/, function: parseShotFired},
+        {regex: /".+" disconnected \(reason ".+"\)/, function: parseDisconnect},
+        {regex: /".+" committed suicide with "/, function: parseSuicide},
+        {regex: /".+?<\d+><.+?><\w+?>" picked up item "\w+"/, function: parsePickup},
+        {regex: /".+?" triggered "player_builtobject" \(.+?\) \(.+?\)/, function: parseBuildObject},
+        {regex: /".+" triggered "killedobject" \(object .+\) \(weapon .+\) \(objectowner .+\) \(attacker_position .+\)/, function: parseDestroyObject},
+        {regex: /".+?" triggered "object_detonated" \(.+?\) \(.+?\)/, function: parseDetonateObject},
+        {regex: /".+?" triggered "healed" against ".+?" \(.+?\)/, function: parseHealPlayer},
+        {regex: /".+" changed role to ".+"}/, function: parseChangeClass},
+        {regex: /".+" spawned as ".+"/, function: parsePlayerRespawn},
+        {regex: /Log file started \(.+?\) \(.+?\) \(.+?\)/, function: parseLogStart},
+        {regex: /Loading map ".+?"/, function: parseMapLoad},
+        {regex: /Started map ".+?" \(CRC ".+?"\)/, function: parseMapStarted},
+        {regex: /server_cvar: ".+?" ".+?"/, function: parseCvarChange},
+        {regex: /rcon from ".+?": command ".+"/, function: parseRconCommand},
+        {regex: /Log file closed./, function: function(line) {var data = {type: 'log_end'}; return data;}} ];
+
     // Data object
     var data = {};
 
-    if(line.match(/".+?" killed ".+?" with ".+?" \(attacker_position ".+?"\) \(victim_position ".+?"\)/))
+    regexs.forEach(function(object)
     {
-        // Player killed another player.
-        data = parseKill(line);
-    }
-    else if(line.match(/".+?" killed ".+?" with ".+?" \(.+?".+?"\) \(.+?".+?"\) \(.+?".+?"\)/))
-    {
-        // Player killed another player -- with special.
-        data = parseSpecialKill(line);
-    }
-    else if(line.match(/".+?" triggered "damage" against ".+?" \(damage "\d+"\) \(weapon "\w+"\)/))
-    {
-        // Player damaged another player.
-        data = parseDamage(line);
-    }
-    else if(line.match(/".+?" triggered "damage" against ".+?" \(damage "\d+"\) \(realdamage "\d+"\) \(weapon "\w+"\)/))
-    {
-        // Player damaged another player -- with real damage.
-        data = parseRealDamage(line);
-    }
-    else if(line.match(/".+" triggered "shot_fired" \(weapon ".+"\)/))
-    {
-        // Player shot a weapon.
-        data = parseShotFired(line);
-    }
-    else if(line.match(/".+" disconnected \(reason ".+"\)/))
-    {
-        // Player disconnected.
-        data = parseDisconnect(line);
-    }
-    else if(line.match(/".+" committed suicide with "/))
-    {
-        // Player suicided.
-        data = parseSuicide(line);
-    }
-    else if(line.match(/".+?<\d+><.+?><\w+?>" picked up item "\w+"/))
-    {
-        // Player picked up item.
-        data = parsePickup(line);
-    }
-    else if(line.match(/".+?" triggered "player_builtobject" \(.+?\) \(.+?\)/))
-    {
-        // Player built an object
-        data = parseBuildObject(line);
-    }
-    else if(line.match(/".+" triggered "killedobject" \(object .+\) \(weapon .+\) \(objectowner .+\) \(attacker_position .+\)/))
-    {
-        // Player destroyed an object
-        data = parseDestroyObject(line);
-    }
-    else if(line.match(/".+?" triggered "object_detonated" \(.+?\) \(.+?\)/))
-    {
-        // Player detonated an object
-        data = parseDetonateObject(line);
-    }
-    else if(line.match(/".+?" triggered "healed" against ".+?" \(.+?\)/))
-    {
-        // Player healed another player
-        data = parseHealPlayer(line);
-    }
-    else if(line.match(/".+" changed role to ".+"}/))
-    {
-        // Player changed class.
-        data = parseChangeClass(line);
-    }
-    else if(line.match(/".+" spawned as ".+"/))
-    {
-        // Player respawned.
-        data = parsePlayerRespawn(line);
-    }
-    else if(line.match(/Log file started \(.+?\) \(.+?\) \(.+?\)/))
-    {
-        // Log started.
-        data = parseLogStart(line);
-    }
-    else if(line.match(/Loading map ".+?"/))
-    {
-        // Loading map.
-        data = parseMapLoad(line);
-    }
-    else if(line.match(/Started map ".+?" \(CRC ".+?"\)/))
-    {
-        // Started map.
-        data = parseMapStarted(line);
-    }
-    else if(line.match(/server_cvar: ".+?" ".+?"/))
-    {
-        // Server cvar changed.
-        data = parseCvarChange(line);
-    }
-    else if(line.match(/rcon from ".+?": command ".+"/))
-    {
-        // Server rcon command.
-        data = parseRconCommand(line);
-    }
-    else if(line.match(/Log file closed./))
-    {
-        // Log file ended.
-        data = {type: 'log_end'};
-    }
-    else
-    {
+        if(line.match(object.regex))
+        {
+            data = object.function(line);
+        }
+    });
+
+    if(data.length == 0)
         logger.warn("Missing handler for line %s, bug Ranndom about it!", line);
-    }
 
     return data;
 }
