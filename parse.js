@@ -23,6 +23,7 @@ exports.parseLine = function(line)
         {regex: /".+" connected, address ".+?"/, function: parsePlayerStartConnect},
         {regex: /".+" STEAM USERID validated/, function: parsePlayerValidated},
         {regex: /".+" entered the game/, function: parsePlayerConnect},
+        {regex: /".+" joined team ".+"/, function: parsePlayerJoinTeam},
         {regex: /".+" changed role to ".+"}/, function: parseChangeClass},
         {regex: /".+" spawned as ".+"/, function: parsePlayerRespawn},
         {regex: /World triggered ".+?"/, function: parseWorldTrigger},
@@ -382,6 +383,17 @@ var parsePlayerConnect = function(line)
 
     var matches = line.match(/"(.+)<\d+><(.+)><.*>"/);
     data.player = {name: matches[1], steamid: matches[2]};
+
+    return data;
+}
+
+var parsePlayerJoinTeam = function(line)
+{
+    var data = {};
+    data.type = 'player_join_team';
+
+    var matches = line.match(/"(.+)<\d+><(.+)><(Blue|Red|Unassigned)>" joined team "(Blue|Red)"/);
+    data.player = {name: matches[1], steamid: matches[2], previousTeam: matches[3], newTeam: matches[4]};
 
     return data;
 }
