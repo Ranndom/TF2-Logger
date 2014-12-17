@@ -14,6 +14,8 @@ var selfJSON = require('./package.json');
 var socket = dgram.createSocket('udp4');
 var events = new EventEmitter();
 
+var numModules = 0;
+
 // Load modules
 fs.readdir("modules", function(err, files)
 {
@@ -42,12 +44,19 @@ fs.readdir("modules", function(err, files)
                         {
                             logger.info("Loaded module %s v%s", moduleJSON.name, moduleJSON.version);
                             require("./modules/" + file + "/" + moduleJSON.main)(events, logger);
+
+                            numModules++;
                         }
                     }
                 });
             }
         });
     });
+
+    if(numModules == 0)
+    {
+        logger.warn("No modules were loaded! Check modules directory?");
+    }
 });
 
 // Finally bind the socket.

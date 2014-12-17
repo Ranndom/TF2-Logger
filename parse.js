@@ -296,7 +296,7 @@ var parseDisconnect = function(line)
     var data = {};
     data.type = 'disconnect';
 
-    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" disconnected \(reason "(.+)"\)/);
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue|Unassigned)>" disconnected \(reason "(.+)"\)/);
     data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.reason = matches[4];
 
@@ -392,7 +392,7 @@ var parsePlayerJoinTeam = function(line)
     var data = {};
     data.type = 'player_join_team';
 
-    var matches = line.match(/"(.+)<\d+><(.+)><(Blue|Red|Unassigned)>" joined team "(Blue|Red)"/);
+    var matches = line.match(/"(.+)<\d+><(.+)><(Blue|Red|Unassigned|Spectator)>" joined team "(Blue|Red|Unassigned|Spectator)"/);
     data.player = {name: matches[1], steamid: matches[2], previousTeam: matches[3], newTeam: matches[4]};
 
     return data;
