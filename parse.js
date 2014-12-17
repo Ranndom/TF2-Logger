@@ -20,8 +20,9 @@ exports.parseLine = function(line)
         {regex: /".+" triggered "killedobject" \(object .+\) \(weapon .+\) \(objectowner .+\) \(attacker_position .+\)/, function: parseDestroyObject},
         {regex: /".+?" triggered "object_detonated" \(.+?\) \(.+?\)/, function: parseDetonateObject},
         {regex: /".+?" triggered "healed" against ".+?" \(.+?\)/, function: parseHealPlayer},
-        {regex: /".+" connected, address ".+?"/, function: parsePlayerConnect},
+        {regex: /".+" connected, address ".+?"/, function: parsePlayerStartConnect},
         {regex: /".+" STEAM USERID validated/, function: parsePlayerValidated},
+        {regex: /".+" entered the game/, function: parsePlayerConnect},
         {regex: /".+" changed role to ".+"}/, function: parseChangeClass},
         {regex: /".+" spawned as ".+"/, function: parsePlayerRespawn},
         {regex: /World triggered ".+?"/, function: parseWorldTrigger},
@@ -352,10 +353,10 @@ var parseWorldTrigger = function(line)
     return data;
 }
 
-var parsePlayerConnect = function(line)
+var parsePlayerStartConnect = function(line)
 {
     var data = {};
-    data.type = 'player_connect';
+    data.type = 'player_start_connect';
 
     var matches = line.match(/"(.+)<\d+><(.+)><.*>" connected, address "(.+):(\d+)"/);
     data.player = {name: matches[1], steamid: matches[2], address: matches[3], port: matches[4]};
@@ -367,6 +368,17 @@ var parsePlayerValidated = function(line)
 {
     var data = {};
     data.type = 'player_validated';
+
+    var matches = line.match(/"(.+)<\d+><(.+)><.*>"/);
+    data.player = {name: matches[1], steamid: matches[2]};
+
+    return data;
+}
+
+var parsePlayerConnect = function(line)
+{
+    var data = {};
+    data.type = 'player_connect';
 
     var matches = line.match(/"(.+)<\d+><(.+)><.*>"/);
     data.player = {name: matches[1], steamid: matches[2]};
