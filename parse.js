@@ -13,6 +13,7 @@ exports.parseLine = function(line)
         {regex: /".+?" triggered "damage" against ".+?" \(damage "\d+"\) \(realdamage "\d+"\) \(weapon "\w+"\)/, function: parseRealDamage},
         {regex: /".+?" triggered "damage" against ".+?" \(damage "\d+"\) \(weapon "\w+"\)/, function: parseDamage},
         {regex: /".+" triggered "shot_fired" \(weapon ".+"\)/, function: parseShotFired},
+        {regex: /".+" triggered "shot_hit" \(weapon ".+"\)/, function: parseShotHit},
         {regex: /".+" disconnected \(reason ".+"\)/, function: parseDisconnect},
         {regex: /".+" committed suicide with "/, function: parseSuicide},
         {regex: /".+?<\d+><.+?><\w+?>" picked up item "\w+"/, function: parsePickup},
@@ -299,6 +300,18 @@ var parseShotFired = function(line)
     data.type = 'shot_fired';
 
     var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue|unknown)*>" triggered "shot_fired" \(weapon "(.+)"\)/);
+    data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
+    data.weapon = matches[4];
+
+    return data;
+}
+
+var parseShotHit = function(line)
+{
+    var data = {};
+    data.type = 'shot_hit';
+
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue|unknown)*>" triggered "shot_hit" \(weapon "(.+)"\)/);
     data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.weapon = matches[4];
 

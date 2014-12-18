@@ -2,3 +2,4 @@
 DOCUMENTATION
 node_modules
 modules/mongo-logger
+modules/test-module
