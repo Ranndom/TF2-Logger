@@ -40,8 +40,23 @@ fs.readdir("modules", function(err, files)
                         }
                         else
                         {
-                            logger.info("Loaded module %s v%s", moduleJSON.name, moduleJSON.version);
-                            require("./modules/" + file + "/" + moduleJSON.main)(events, logger);
+                            var error = false;
+
+                            try
+                            {
+                                require("./modules/" + file + "/" + moduleJSON.main)(events, logger);
+                            }
+                            catch(err)
+                            {
+                                error = true;
+                                if(err.code == 'MODULE_NOT_FOUND')
+                                {
+                                    logger.error("Failed to load module %s v%s, couldn't find file %s", moduleJSON.name, moduleJSON.version, moduleJSON.main);
+                                }
+                            }
+
+                            if(!error)
+                                logger.info("Loaded module %s v%s", moduleJSON.name, moduleJSON.version);
                         }
                     }
                 });
@@ -67,7 +82,10 @@ socket.on('message', function(msg, rinfo)
 
     logger.debug("%s", msg);
 
-    events.emit('parse', data.type, data);
+    if(data.error)
+        events.emit('parse-err', data.error);
+    else
+        events.emit('parse', data.type, data);
 });
 
 // Socket listening

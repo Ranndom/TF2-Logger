@@ -41,7 +41,15 @@ exports.parseLine = function(line)
     {
         if(line.match(object.regex))
         {
-            data = object.function(line);
+            try
+            {
+                data = object.function(line);
+            }
+            catch(err)
+            {
+                logger.error("Failed to parse line \"%s\"!", line);
+                data.error = "Failed to parse line \"" + line + "\"!";
+            }
         }
     });
 
