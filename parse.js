@@ -81,7 +81,7 @@ var parseSpecialKill = function(line)
     var data = {};
     data.type = 'special_kill';
 
-    var matches = line.match(/"(.+?)<\d+><(.+?)><(Blue|Red)>" killed "(.+?)<\d+><(.+?)><(Blue|Red)>" with "(\w+)" \(customkill "(\w+)"\) \(attacker_position "(-*\d+) (-*\d+) (-*\d+)"\) \(victim_position "(-*\d+) (-*\d+) (-*\d+)"\)/);
+    var matches = line.match(/"(.+?)<\d+><(.+?)><(Blue|Red|unknown)*>" killed "(.+?)<\d+><(.+?)><(Blue|Red|unknown)*>" with "(\w+)" \(customkill "(\w+)"\) \(attacker_position "(-*\d+) (-*\d+) (-*\d+)"\) \(victim_position "(-*\d+) (-*\d+) (-*\d+)"\)/);
     data.attacker = {name: matches[1], steamid: matches[2], team: matches[3], position: {x: matches[9], y: matches[11], z: matches[10]}};
     data.victim = {name: matches[4], steamid: matches[5], team: matches[6], position: {x: matches[12], y: matches[14], z: matches[13]}};
     data.weapon = matches[7];
@@ -95,8 +95,14 @@ var parseSuicide = function(line)
     var data = {};
     data.type = 'suicide';
 
-    var matches = line.match(/RL \d+\/\d+\/\d+ - \d+:\d+:\d+: "(.+?)<\d+><(.+?)><(.+)>" committed suicide with ".+?" \(attacker_position "(-*\d+) (-*\d+) (-*\d+)"\)/);
-    data.attacker = {name: matches[1], steamid: matches[2], team: matches[3], position: {x: matches[4], y: matches[6], z: matches[5]}};
+    var matches = line.match(/"(.+?)<\d+><(.+?)><(.+)>" committed suicide with ".+?" \(attacker_position "(-*\d+) (-*\d+) (-*\d+)"\)/);
+    if(matches)
+        data.attacker = {name: matches[1], steamid: matches[2], team: matches[3], position: {x: matches[4], y: matches[6], z: matches[5]}};
+    else
+    {
+        matches = line.match(/"(.+?)<\d+><(.+?)><(.+)>" committed suicide with ".+?" \(customkill "(.+)"\) \(attacker_position "(-*\d+) (-*\d+) (-*\d+)"\)/);
+        data.attacker = {name: matches[1], steamid: matches[2], team: matches[3], position: {x: matches[5], y: matches[7], z: matches[6]}};
+    }
 
     return data;
 }
@@ -106,11 +112,11 @@ var parsePickup = function(line)
     var data = {};
     data.type = 'item_pickup';
 
-    var matches = line.match(/"(.+?)<\d+><(.+?)><(Blue|Red)>" picked up item "(\w+)"/);
+    var matches = line.match(/"(.+?)<\d+><(.+?)><(Blue|Red|unknown)*>" picked up item "(\w+)"/);
     data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.item = matches[4];
 
-    var medkitMatches = line.match(/"(.+?)<\d+><(.+?)><(Blue|Red)>" picked up item "(\w+)" \(healing "(\d+)"/);
+    var medkitMatches = line.match(/"(.+?)<\d+><(.+?)><(Blue|Red|unknown)*>" picked up item "(\w+)" \(healing "(\d+)"/);
     if(medkitMatches != null)
     {
         data.healed = medkitMatches[5];
@@ -185,7 +191,7 @@ var parseDamage = function(line)
     var data = {};
     data.type = 'damage';
 
-    var matches = line.match(/"(.+?)<\d+><(.+?)><(Blue|Red)>" triggered "damage" against "(.+?)<\d+><(.+?)><(Blue|Red)>" \(damage "(\d+)"\) \(weapon "(\w+)"\)/);
+    var matches = line.match(/"(.+?)<\d+><(.+?)><(Blue|Red|unknown)*>" triggered "damage" against "(.+?)<\d+><(.+?)><(Blue|Red|unknown)*>" \(damage "(\d+)"\) \(weapon "(\w+)"\)/);
     data.attacker = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.victim = {name: matches[4], steamid: matches[5], team: matches[6]};
     data.damage = matches[7];
@@ -211,7 +217,7 @@ var parseRealDamage = function(line)
     var data = {};
     data.type = 'real_damage';
 
-    var matches = line.match(/"(.+?)<\d+><(.+?)><(Blue|Red)>" triggered "damage" against "(.+?)<\d+><(.+?)><(Blue|Red)>" \(damage "(\d+)"\) \(realdamage "(\d+)"\) \(weapon "(\w+)"\)/);
+    var matches = line.match(/"(.+?)<\d+><(.+?)><(Blue|Red|unknown)*>" triggered "damage" against "(.+?)<\d+><(.+?)><(Blue|Red|unknown)*>" \(damage "(\d+)"\) \(realdamage "(\d+)"\) \(weapon "(\w+)"\)/);
     data.attacher = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.victim = {name: matches[4], steamid: matches[5], team: matches[6]};
     data.damage = matches[7];
@@ -238,7 +244,7 @@ var parseBuildObject = function(line)
     var data = {};
     data.type = 'build_object';
 
-    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" triggered "player_builtobject" \(object "(\w+)"\) \(position "(-*\d+) (-*\d+) (-*\d+)"\)/);
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue|unknown)*>" triggered "player_builtobject" \(object "(\w+)"\) \(position "(-*\d+) (-*\d+) (-*\d+)"\)/);
     data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.object = matches[4];
     data.position = {x: matches[5], y: matches[7], z: matches[6]};
@@ -251,7 +257,7 @@ var parseDestroyObject = function(line)
     var data = {};
     data.type = 'destroy_object';
 
-    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" triggered "killedobject" \(object "(.+)"\) \(weapon "(.+)"\) \(objectowner "(.+)<\d+><(.+)><(Red|Blue)>"\) \(attacker_position "(-*\d+) (-*\d+) (-*\d+)"\)/);
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue|unknown)*>" triggered "killedobject" \(object "(.+)"\) \(weapon "(.+)"\) \(objectowner "(.+)<\d+><(.+)><(Red|Blue)>"\) \(attacker_position "(-*\d+) (-*\d+) (-*\d+)"\)/);
     data.attacker = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.object = matches[4];
     data.victim = {name: matches[6], steamid: matches[7], team: matches[8]};
@@ -266,7 +272,7 @@ var parseDetonateObject = function(line)
     var data = {};
     data.type = 'detonate_object';
 
-    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" triggered "object_detonated" \(object "(.+)"\) \(position "(-*\d+) (-*\d+) (-*\d+)"\)/);
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue|unknown)*>" triggered "object_detonated" \(object "(.+)"\) \(position "(-*\d+) (-*\d+) (-*\d+)"\)/);
     data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.object = matches[4];
     data.position = {x: matches[5], y: matches[7], z: matches[6]};
@@ -279,7 +285,7 @@ var parseHealPlayer = function(line)
     var data = {};
     data.type = 'heal_player';
 
-    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" triggered "healed" against "(.+)<\d+><(.+)><(Red|Blue)>" \(healing "(\d+)"\)/);
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue|unknown)*>" triggered "healed" against "(.+)<\d+><(.+)><(Red|Blue)>" \(healing "(\d+)"\)/);
     data.healer = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.healed = {name: matches[4], steamid: matches[5], team: matches[6]};
     data.amount = matches[7];
@@ -292,7 +298,7 @@ var parseShotFired = function(line)
     var data = {};
     data.type = 'shot_fired';
 
-    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue)>" triggered "shot_fired" \(weapon "(.+)"\)/);
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue|unknown)*>" triggered "shot_fired" \(weapon "(.+)"\)/);
     data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.weapon = matches[4];
 
@@ -304,7 +310,7 @@ var parseDisconnect = function(line)
     var data = {};
     data.type = 'disconnect';
 
-    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue|Unassigned)*>" disconnected \(reason "(.+)"\)/);
+    var matches = line.match(/"(.+)<\d+><(.+)><(Red|Blue|Unassigned|Spectator|unknown)*>" disconnected \(reason "(.+)"\)/);
     data.player = {name: matches[1], steamid: matches[2], team: matches[3]};
     data.reason = matches[4];
 
@@ -400,7 +406,7 @@ var parsePlayerJoinTeam = function(line)
     var data = {};
     data.type = 'player_join_team';
 
-    var matches = line.match(/"(.+)<\d+><(.+)><(Blue|Red|Unassigned|Spectator)>" joined team "(Blue|Red|Unassigned|Spectator)"/);
+    var matches = line.match(/"(.+)<\d+><(.+)><(Blue|Red|Unassigned|Spectator)*>" joined team "(Blue|Red|Unassigned|Spectator)*"/);
     data.player = {name: matches[1], steamid: matches[2], previousTeam: matches[3], newTeam: matches[4]};
 
     return data;
